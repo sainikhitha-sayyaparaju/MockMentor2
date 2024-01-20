@@ -1,0 +1,452 @@
+{% extends 'dashboard/base.html' %} 
+{% load static %}
+{% load crispy_forms_tags %} 
+
+{% block content %}
+
+<div>
+  <h2 class="text-center mb-4">YOUR SPEAKING INSIGHTS</h2>
+
+  <div class="d-flex justify-content-center mb-3">
+    <div class="btn-group w-100">
+      <button type="button" class="btn btn-outline-primary w-50" data-bs-toggle="tab" href="#coaching">Coaching</button>
+      <button type="button" class="btn btn-outline-primary w-50" data-bs-toggle="tab" href="#analytics">Analytics</button>
+    </div>
+  </div>
+
+  <div class="tab-content">
+    <div id="coaching" class="tab-pane fade show active">
+      <ul class="list-group">
+        <li class="list-group-item {% if 'analytics' == tab %}visible{% else %}invisible{% endif %}">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <i class="fa fa-check-circle text-success"></i> Eye Contact: {{ec_center}}%
+            </div>
+            <a href="#" class="toggle-info" data-bs-toggle="collapse" data-bs-target="#eyeContactInfo">
+              <i class="fa fa-caret-down"></i>
+            </a>
+          </div>
+          <div id="eyeContactInfo" class="collapse mt-2">
+            <div class="w3-container">
+              <br/>
+              <div class="w3-light-grey">
+                <div class="w3-container w3-blue" style="width:{{ec_center}}%">{{ec_center}}%</div>
+                <h5><b>You maintained {{ec_center}}% eye contact</b></h5>
+              </div><br>
+              </div>
+              {% if ec_center < 25 %}
+              <h6>Your eye contact during the interview was limited. Building stronger eye contact can enhance your connection with the interviewer and convey confidence and engagement.</h6>
+              {% elif ec_center < 50 %}
+              <h6>Your eye contact showed improvement, but there's room for enhancement. Try maintaining eye contact more consistently to demonstrate attentiveness and confidence throughout the conversation.</h6>
+              {% elif ec_center < 75 %}
+              <h6>Good job on maintaining eye contact! It created a positive impression, reflecting your confidence and engagement. Continue this level of eye contact to build a strong connection with the interviewer.</h6>
+              {% elif ec_center <= 100%}
+              <h6>Excellent eye contact! Your consistent engagement through strong eye contact conveyed confidence and sincerity. This positively influenced your overall communication during the interview. Keep up the great work!</h6>
+              {% endif %}
+          </div>
+        </li>
+        <li class="list-group-item {% if 'coaching' == tab %}visible{% else %}invisible{% endif %}">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <i class="fa fa-check-circle text-success"></i> Centering: Perfectly centered
+            </div>
+            <a href="#" class="toggle-info" data-bs-toggle="collapse" data-bs-target="#centeringInfo">
+              <i class="fa fa-caret-down"></i>
+            </a>
+          </div>
+          <div id="centeringInfo" class="collapse mt-2">
+            <br/>
+            <h3><b>Centering: {% if loc1 %} <span style="color: green;">Right</span> {% else %} <span style="color: red;">Wrong</span>{% endif %}</b></h3>
+
+            <h3><b>Distance: {% if loc2  %} <span style="color: green;">Right</span> {% else %} <span style="color: red;">Wrong</span>{% endif %}</b></h3>
+            <br/>
+            <h6>Always try to be in the center and at the right distance from the screen throught the interview. This projects confidence and professionalism.</h6>
+            <p>Use our <a href="{% url 'checkPosition' %}"><b>check Position</b></a> tab for knowing your position better</p>
+          </div>
+        </li>
+        <li class="list-group-item {% if 'analytics' == tab %}visible{% else %}invisible{% endif %}">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <i class="fa fa-check-circle text-success"></i> Emotion: {{max}}
+            </div>
+            <a href="#" class="toggle-info" data-bs-toggle="collapse" data-bs-target="#emotionInfo">
+              <i class="fa fa-caret-down"></i>
+            </a>
+          </div>
+          <div id="emotionInfo" class="collapse mt-2">
+            <br/>
+            <div class="row">
+              <div class="col-md-3 col-sm-6">
+                  <div class="progress pink">
+                      <span class="progress-left">
+                          <span class="progress-bar"></span>
+                      </span>
+                      <span class="progress-right">
+                          <span class="progress-bar"></span>
+                      </span>
+                      <div class="progress-value">{{up}}%</div>
+                  </div>
+                  <div class="progress-text">
+                      <p><h5><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unplesant Emotion</b></h5></p>
+                  </div>
+                </div>
+              <div class="col-md-3 col-sm-6">
+                <div class="progress blue">
+                    <span class="progress-left">
+                        <span class="progress-bar"></span>
+                    </span>
+                    <span class="progress-right">
+                        <span class="progress-bar"></span>
+                    </span>
+                    <div class="progress-value">{{happy}}%</div>
+                </div>
+                <div class="progress-text">
+                  <p><h5><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Happy</b></h5></p>
+            
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <div class="progress yellow">
+                  <span class="progress-left">
+                      <span class="progress-bar"></span>
+                  </span>
+                  <span class="progress-right">
+                      <span class="progress-bar"></span>
+                  </span>
+                  <div class="progress-value">{{neutral}}%</div>
+              </div>
+              <div class="progress-text">
+                <p><h5><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Neutral</b></h5></p>
+            
+              </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div class="progress green">
+                <span class="progress-left">
+                    <span class="progress-bar"></span>
+                </span>
+                <span class="progress-right">
+                    <span class="progress-bar"></span>
+                </span>
+                <div class="progress-value">{{surprise}}%</div>
+            </div>
+            <div class="progress-text">
+              <p><h5><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Surprise</b></h5></p>
+            
+            </div>
+        </div>
+        <br/><br/><br/>
+          <h4><b>Feedback:</b></h4> <h6>{{feedback}}</h6>
+          </div>
+          
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div id="analytics" class="tab-pane fade show active">
+      <ul class="list-group">
+        
+        <li class="list-group-item {% if 'coaching' == tab %}visible{% else %}invisible{% endif %}">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <i class="fa fa-check-circle text-success"></i> Questions
+            </div>
+            <a href="#" class="toggle-info" data-bs-toggle="collapse" data-bs-target="#centeringInfo2">
+              <i class="fa fa-caret-down"></i>
+            </a>
+          </div>
+          <div id="centeringInfo2" class="collapse mt-2">
+            <!-- {% for i in indices %}
+            <b>Question: {{ questions.0 }}</b><br/>
+            <p>Your Answer: {{ answers.i }}</p><br/>
+            <hr/>
+            {% endfor %} -->
+            {% if num >= 1 %}
+              <b>Question: {{ questions.0 }}</b><br/>
+              <p>Your Answer: {{ answers.0 }}</p><br/>
+              <p>{{ answers_feedback.0 }}</p><br/>
+              <hr/>
+            {% endif %}
+            {% if num >= 2 %}
+              <b>Question: {{ questions.1 }}</b><br/>
+              <p>Your Answer: {{ answers.1 }}</p><br/>
+              <p>{{ answers_feedback.1 }}</p><br/>
+              <hr/>
+            {% endif %}
+            {% if num >= 3 %}
+              <b>Question: {{ questions.2 }}</b><br/>
+              <p>Your Answer: {{ answers.2 }}</p><br/>
+              <p>{{ answers_feedback.2 }}</p><br/>
+              <hr/>
+            {% endif %}
+            {% if num >= 4 %}
+              <b>Question: {{ questions.3 }}</b><br/>
+              <p>Your Answer: {{ answers.3 }}</p><br/>
+              <p>{{ answers_feedback.3 }}</p><br/>
+              <hr/>
+            {% endif %}
+            {% if num >= 4 %}
+              <b>Question: {{ questions.4 }}</b><br/>
+              <p>Your Answer: {{ answers.4 }}</p><br/>
+              <p>{{ answers_feedback.4 }}</p><br/>
+              <hr/>
+            {% endif %}
+            <b>Suggestion:</b><br/>
+            {{ suggestion }}
+          </div>
+          
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('.btn-group button').on('click', function() {
+    var tabId = $(this).attr('href');
+    var tabName = tabId.substring(1); // extract tab name from ID
+    console.log(`Clicked tab: ${tabName}`);
+    $('.tab-pane').find('.list-group-item').addClass('invisible');
+    if (tabName === 'analytics') {
+      console.log('Showing #coaching list items');
+      $('#coaching').find('.list-group-item').removeClass('invisible');
+    } else if (tabName === 'coaching') {
+      console.log('Showing #analytics list items');
+      $('#analytics').find('.list-group-item').removeClass('invisible');
+    }
+  });
+
+  $('.toggle-info').on('click', function() {
+    var target = $(this).data('bs-target');
+    $(target).collapse('toggle');
+  });
+</script>
+
+<style>
+  .progress-containers {
+    width: 50%;
+    margin: 50px auto;
+  }
+
+  .progress-bars {
+    height: 20px;
+    background-color: #e0e0e0; /* Set a light background color for the progress bar container */
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-bar-inners {
+    height: 100%;
+    width: 0;
+    background-color: #3498db; /* Set the blue color for the progress bar */
+    border-radius: 10px;
+    transition: width 0.3s ease;
+  }
+  .progress{
+    width: 150px;
+    height: 150px;
+    line-height: 150px;
+    background: none;
+    margin: 0 auto;
+    box-shadow: none;
+    position: relative;
+}
+.progress:after{
+    content: "";
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.progress > span{
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+}
+.progress .progress-left{
+    left: 0;
+}
+.progress .progress-bar{
+    width: 100%;
+    height: 100%;
+    background: none;
+    border-width: 2px;
+    border-style: solid;
+    position: absolute;
+    top: 0;
+}
+.progress .progress-left .progress-bar{
+    left: 100%;
+    border-top-right-radius: 80px;
+    border-bottom-right-radius: 80px;
+    border-left: 0;
+    -webkit-transform-origin: center left;
+    transform-origin: center left;
+}
+.progress .progress-right{
+    right: 0;
+}
+.progress .progress-right .progress-bar{
+    left: -100%;
+    border-top-left-radius: 80px;
+    border-bottom-left-radius: 80px;
+    border-right: 0;
+    -webkit-transform-origin: center right;
+    transform-origin: center right;
+    animation: loading-1 1.8s linear forwards;
+}
+.progress .progress-value{
+    width: 85%;
+    height: 85%;
+    border-radius: 50%;
+    border: 2px solid #ebebeb;
+    font-size: 32px;
+    line-height: 125px;
+    text-align: center;
+    position: absolute;
+    top: 7.5%;
+    left: 7.5%;
+}
+.progress.blue .progress-bar{
+    border-color: #049dff;
+}
+.progress.blue .progress-value{
+    color: #049dff;
+}
+.progress.blue .progress-left .progress-bar{
+    animation: loading-2 1.5s linear forwards 1.8s;
+}
+.progress.yellow .progress-bar{
+    border-color: #fdba04;
+}
+.progress.yellow .progress-value{
+    color: #fdba04;
+}
+.progress.yellow .progress-left .progress-bar{
+    animation: loading-3 1s linear forwards 1.8s;
+}
+.progress.pink .progress-bar{
+    border-color: #ed687c;
+}
+.progress.pink .progress-value{
+    color: #ed687c;
+}
+.progress.pink .progress-left .progress-bar{
+    animation: loading-4 0.4s linear forwards 1.8s;
+}
+.progress.green .progress-bar{
+    border-color: #1abc9c;
+}
+.progress.green .progress-value{
+    color: #1abc9c;
+}
+.progress.green .progress-left .progress-bar{
+    animation: loading-5 1.2s linear forwards 1.8s;
+}
+@keyframes loading-1{
+    0%{
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100%{
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+}
+@keyframes loading-2{
+    0%{
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100%{
+        -webkit-transform: rotate(144deg);
+        transform: rotate(144deg);
+    }
+}
+@keyframes loading-3{
+    0%{
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100%{
+        -webkit-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+}
+@keyframes loading-4{
+    0%{
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100%{
+        -webkit-transform: rotate(36deg);
+        transform: rotate(36deg);
+    }
+}
+@keyframes loading-5{
+    0%{
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100%{
+        -webkit-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+}
+@media only screen and (max-width: 990px){
+    .progress{ margin-bottom: 20px; }
+}
+  body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  .btn-group button {
+    border-radius: 15px;
+  }
+
+  .btn-group button.active {
+    background-color: transparent;
+    color: #007bff;
+  }
+
+  .tab-pane {
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 10px;
+  }
+
+  .list-group-item {
+    border: 1px solid #ddd;
+    margin-bottom: 5px;
+  }
+
+  .list-group-item:hover {
+    background-color: #f8f9fa;
+  }
+
+  .fa-info-circle {
+    margin-left: 5px;
+    color: #007bff;
+  }
+
+  .invisible {
+    display: none;
+  }
+</style>
+
+
+{% endblock content %}
