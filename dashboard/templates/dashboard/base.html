@@ -62,11 +62,20 @@
                 <a class="nav-link" style=" font-size:130%;" href="{% url 'checkPosition' %}">CheckPosition</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" style=" font-size:130%;" href="#">Profile</a>
+                <a class="nav-link" style=" font-size:130%;" href="{% url 'user_profile' %}">Profile</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" style=" font-size:130%;" href="#">Logout</a>
-              </li>
+              {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link" style=" font-size:130%;" href="/signout">Logout</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" style=" font-size:130%;" href="{% url 'signup' %}">SignUp</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" style=" font-size:130%;" href="{% url 'signin' %}">SignIn</a>
+                </li>
+              {% endif %}
               <!-- <li class="nav-item">
                 <a class="nav-link" href="#">Register</a>
               </li>
