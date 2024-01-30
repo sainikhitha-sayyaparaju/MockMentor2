@@ -4,6 +4,17 @@ from . models import *
 from django.contrib import messages
 from django.http.response import StreamingHttpResponse
 from django.http.response import StreamingHttpResponse, HttpResponse
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.core.mail import EmailMessage, send_mail
+from MockMentor import settings
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth import authenticate, login, logout
+# from . tokens import generate_token
 from dashboard.camera import VideoCamera, IPWebCam
 from PIL import Image
 from io import BytesIO
@@ -36,7 +47,7 @@ number = 0
 answers_feedback = []
 # API_KEY = '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' old_key
 # API_KEY = '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' old
-API_KEY = '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'
+API_KEY = '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'
 os.environ["OPENAI_API_KEY"] = API_KEY
 openai.api_key = os.getenv("OPENAI_API_KEY")
 stop_streaming = False
@@ -51,6 +62,93 @@ def home(request):
     # get_answer_feedback()
     print(answers_feedback)
     return render(request, 'dashboard/home.html')
+
+def signup(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        fname = request.POST['fname']
+        lname = request.POST['lname']
+        email = request.POST['email']
+        pass1 = request.POST['pass1']
+        pass2 = request.POST['pass2']
+        
+        if User.objects.filter(username=username):
+            messages.error(request, "Username already exist! Please try some other username.")
+            return redirect('home')
+        
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email Already Registered!!")
+            return redirect('home')
+        
+        if len(username)>20:
+            messages.error(request, "Username must be under 20 charcters!!")
+            return redirect('home')
+        
+        if pass1 != pass2:
+            messages.error(request, "Passwords didn't matched!!")
+            return redirect('home')
+        
+        if not username.isalnum():
+            messages.error(request, "Username must be Alpha-Numeric!!")
+            return redirect('home')
+        
+        myuser = User.objects.create_user(username, email, pass1)
+        myuser.first_name = fname
+        myuser.last_name = lname
+        # myuser.is_active = False
+        myuser.save()
+        messages.success(request, "Your Account has been created succesfully!! Please check your email to confirm your email address in order to activate your account.")
+        
+        # Welcome Email
+        subject = "Welcome to GFG- Django Login!!"
+        message = "Hello"        
+        from_email = settings.EMAIL_HOST_USER
+        to_list = [myuser.email]
+        print(from_email)
+        print(to_list)
+        send_mail(subject, message, from_email, to_list, fail_silently=True)
+        
+        return redirect('signin')
+        
+    return render(request, 'dashboard/signup.html')
+
+def signin(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        pass1 = request.POST['pass1']
+        
+        user = authenticate(username=username, password=pass1)
+        
+        if user is not None:
+            login(request, user)
+            fname = user.first_name
+            # messages.success(request, "Logged In Sucessfully!!")
+            request.session['authenticated_user'] = {
+                'first_name': user.first_name,
+                # Add other user details as needed
+            }
+            return render(request, "dashboard/home.html")
+        else:
+            messages.error(request, "Bad Credentials!!")
+            return redirect('home')
+    
+    return render(request, 'dashboard/signin.html')
+
+def user_profile(request):
+    authenticated_user = request.session.get('authenticated_user', None)
+    
+    if authenticated_user:
+        first_name = authenticated_user['first_name']
+
+        # Access other user details as needed
+        return render(request, 'dashboard/user_profile.html', {'first_name': first_name})
+    
+    
+
+def signout(request):
+    logout(request)
+    messages.success(request, "Logged Out Successfully!!")
+    return redirect('home')
 
 def feedback(request):
     global questions
