@@ -1,6 +1,6 @@
 {% extends 'dashboard/base.html' %} {% load static %} {% load crispy_forms_tags
 %} {% block content %}
-
+<br/><br/><br/>
 <section class="container text-center">
   <div class="row">
     {% for interview in interviews %}
@@ -11,7 +11,13 @@
             <b>Topic:</b> {{interview.topic}}<br />
             <b>SubTopic:</b> {{interview.subtopic}}<br />
             <b>Expertise:</b> {{interview.expertise}}<br />
-            <b>Number of Questions:</b> {{interview.number}}<br />
+            <b>Number of Questions:</b> {{interview.number}}<br /><br/>
+            <a href="{% url 'check_feedback' interview.id %}"><button class="btn btn-outline-info" type="submit">
+              <b>&nbsp;Check&nbsp;</b>
+            </button></a> &nbsp;
+            <a href="{% url 'delete_interview' interview.id %}"><button class="btn btn-danger btn-outline-info" type="submit">
+              <b>&nbsp;Delete&nbsp;</b>
+            </button></a>
           </div>
         </div>
       </a>
