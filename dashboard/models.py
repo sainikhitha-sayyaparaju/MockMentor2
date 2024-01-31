@@ -10,6 +10,7 @@ class Interview(models.Model):
 
 
 class Interview_Feedback(models.Model):
+    email = models.CharField(max_length=30, default="sai@gmail.com")
     topic = models.CharField(max_length=30, default="")
     subtopic = models.CharField(max_length=30, default='not required')
     expertise = models.CharField(max_length=30, default="")

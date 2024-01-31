@@ -47,7 +47,7 @@ number = 0
 answers_feedback = []
 # API_KEY = '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' old_key
 # API_KEY = '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' old
-API_KEY = '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'
+API_KEY = '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'
 os.environ["OPENAI_API_KEY"] = API_KEY
 openai.api_key = os.getenv("OPENAI_API_KEY")
 stop_streaming = False
@@ -340,7 +340,7 @@ def generate_prompt_questions(topic, expertise, number, specialization):
     return f'generate {number} of {expertise} interview questions on the topic {topic}. Give the questions that are asked in the real time interview for a Engineering Computer science student. If the expertise is low give very basic questions, if the expertise is medium then give normal questions and if the expertise is high give tough questions. give me just the questions. give me the questions in a single line without giving numbers to the questions, add a dollar symbol after each question(at the end of each question)'
 
 def generate_prompt_answer_feedback(question, answer):
-    return f'I will give you some questions and answers in the form of a list. for each question answer pair, give me what would be a better answer. give the entire response in a single line and put a "$" symbol after each answer . question: {question}. answer: {answer}.'
+    return f'I will give you some questions and answers in the form of a list. for each question answer pair, give me what would be a better answer for that particular question in 75 to 150 words. give the entire response in a single line and put a "$" symbol after each answer . question: {question}. answer: {answer}.'
     
 
 def generate_prompt_emotion_feedback():
@@ -366,7 +366,7 @@ def ask_questions():
     global answers
     for question in questions:
         threading.Thread(target=speak, args=(question,)).start()
-        time.sleep(10)
+        time.sleep(5)
         text = transcribe_audio()
         print("Transcript:", text)
         if text != "":

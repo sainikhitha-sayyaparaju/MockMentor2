@@ -16,7 +16,7 @@ emotion_labels = ['Angry', 'Disgust', 'Fear',
 #                   'Happy', 'Neutral', 'Sad', 'Happy']
 face_classifier = cv2.CascadeClassifier(
     cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
-classifier = load_model(r'C:\Users\nxg02249\MockMentor2\dashboard\model.h5')
+classifier = load_model(r'C:/Users/saini/OneDrive/Desktop/Major Project/MockMentor/dashboard/model.h5')
 #
 # emotions = []
 audio_emotion = ["angry", "disgust", "fear", "happy", "neutral", "ps", "sad"]
