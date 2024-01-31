@@ -46,8 +46,9 @@ expertise = ""
 number = 0
 answers_feedback = []
 # API_KEY = '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' old_key
-# API_KEY = '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' old
-API_KEY = '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'
+#API_KEY = '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' #-- recent
+API_KEY = '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' # -- new
+
 os.environ["OPENAI_API_KEY"] = API_KEY
 openai.api_key = os.getenv("OPENAI_API_KEY")
 stop_streaming = False
@@ -95,9 +96,12 @@ def signup(request):
         myuser = User.objects.create_user(username, email, pass1)
         myuser.first_name = fname
         myuser.last_name = lname
+        myuser.username = username
+        myuser.email = email
+
         # myuser.is_active = False
         myuser.save()
-        messages.success(request, "Your Account has been created succesfully!! Please check your email to confirm your email address in order to activate your account.")
+        messages.success(request, "Your Account has been created succesfully!! Please LogIn with your credentials.")
         
         # Welcome Email
         subject = "Welcome to GFG- Django Login!!"
@@ -122,9 +126,12 @@ def signin(request):
         if user is not None:
             login(request, user)
             fname = user.first_name
-            # messages.success(request, "Logged In Sucessfully!!")
+            messages.success(request, "Logged In Sucessfully!!")
             request.session['authenticated_user'] = {
+                'username': user.username,
                 'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email
                 # Add other user details as needed
             }
             return render(request, "dashboard/home.html")
@@ -138,10 +145,15 @@ def user_profile(request):
     authenticated_user = request.session.get('authenticated_user', None)
     
     if authenticated_user:
+        username = authenticated_user['username']
         first_name = authenticated_user['first_name']
+        last_name = authenticated_user['last_name']
+        email = authenticated_user['email']
 
         # Access other user details as needed
-        return render(request, 'dashboard/user_profile.html', {'first_name': first_name})
+        return render(request, 'dashboard/user_profile.html', {'username': username, 'first_name': first_name, 'last_name': last_name, 'email': email})
+    else:
+        return render(request, 'dashboard/user_profile.html')
     
     
 
