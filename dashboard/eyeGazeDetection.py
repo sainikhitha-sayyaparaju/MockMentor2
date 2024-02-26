@@ -1,10 +1,7 @@
 import cv2
 import numpy as np
 
-LEFT_EYE = [362, 382, 381, 380, 374, 373, 390,
-            249, 263, 466, 388, 387, 386, 385, 384, 398]
-RIGHT_EYE = [33, 7, 163, 144, 145, 153, 154,
-             155, 133, 173, 157, 158, 159, 160, 161, 246]
+
 RIGHT_IRIS = [474, 475, 476, 477]
 LEFT_IRIS = [469, 470, 471, 472]
 L_H_LEFT = [33]
@@ -48,8 +45,8 @@ def iris_position_detection(img, results, draw=False):
     (r_x, r_y), r_radius = cv2.minEnclosingCircle(mesh_coord[RIGHT_IRIS])
     center_left = np.array([l_x, l_y], dtype=np.int32)
     center_right = np.array([r_x, r_y], dtype=np.int32)
-    cv2.circle(img, center_left, int(l_radius), (255, 0, 255), 1, cv2.LINE_AA)
-    cv2.circle(img, center_right, int(r_radius), (255, 0, 255), 1, cv2.LINE_AA)
+    # cv2.circle(img, center_left, int(l_radius), (255, 0, 255), 1, cv2.LINE_AA)
+    # cv2.circle(img, center_right, int(r_radius), (255, 0, 255), 1, cv2.LINE_AA)
     iris_pos, ratio = iris_position(
         center_right, mesh_coord[R_H_RIGHT], mesh_coord[R_H_LEFT][0])
     # print(iris_pos)

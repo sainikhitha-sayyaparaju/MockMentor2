@@ -47,7 +47,7 @@ number = 0
 answers_feedback = []
 # API_KEY = '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' old_key
 #API_KEY = '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' #-- recent
-API_KEY = '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' # -- new
+API_KEY = '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' # -- new
 
 os.environ["OPENAI_API_KEY"] = API_KEY
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -185,7 +185,11 @@ def feedback(request):
     text = ""
     # questions_list = [(questions[i], answers[i], answers_feedback[3 * i], answers_feedback[3 * i + 1]) for i in range(len(questions) - 1)]
     suggestion = answers_feedback[-1]
-    context = {'tab': tab, 'up': int(up), 'happy': int(happy), 'neutral': int(neutral), 'surprise': int(surprise), 'max': max(emotions), 'feedback': feedback[1:], 'ec_center': ec_center, 'loc1': location[0] > location[2] - location[0], 'loc2': location[1] > location[2] - location[1], 'questions': questions, 'answers': answers, 'answers_feedback': answers_feedback, 'indices': range(len(answers)), 'suggestion': suggestion, 'text': text, 'num': len(answers)}
+    try:
+        correct_questions = sum([1 for i in answers_feedback[:number] if int(i[:i.find("%")]) >= 50])
+    except:
+        correct_questions = 2
+    context = {'tab': tab, 'up': int(up), 'happy': int(happy), 'neutral': int(neutral), 'surprise': int(surprise), 'max': max(emotions), 'feedback': feedback[1:], 'ec_center': ec_center, 'loc1': location[0] > location[2] - location[0], 'loc2': location[1] > location[2] - location[1], 'questions': questions, 'answers': answers, 'answers_feedback': answers_feedback, 'indices': range(len(answers)), 'suggestion': suggestion, 'text': text, 'num': len(answers), 'correct_questions': correct_questions, 'cap': int((correct_questions / len(answers)) * 100)}
     print(context)
     # context = {'tab': 'coaching', 'up': 0, 'happy': 0, 'neutral': 100, 'surprise': 0, 'max': 100, 'feedback': '\n\nDear [Name],\n\nDuring your interview, you showed a neutral emotion, which can be beneficial as it indicates a calm and composed demeanor. However, it is essential to showcase a range of emotions to convey your passion and enthusiasm for the role. By being too neutral, it may come across as disinterested. I advise you to practice showing more positive emotions like excitement and confidence to leave a lasting impression on the interviewer.\n\nBest of luck!\n[Your Name]', 'ec_center': 91, 'loc1': False, 'loc2': True, 'questions': ['\n\n1. What is the difference between a static and non-static method in Java?', '\n2. Can you explain the concept of encapsulation in Java?', '\n3. How do you handle exceptions in Java?', '\n4. What is the purpose of the "this" keyword in Java?', '\n5. How does inheritance work in Java?', '\n6. Can you give an example of a Java program without using a main() method?', '\n7. What is the difference between a primitive data type and a reference data type in Java?', '\n8. Can you explain the difference between == and .equals() in Java?', '\n9. How do you declare and initialize an array in Java?', '\n10. Can you give an example of using polymorphism in Java?', 'thank you'], 'answers': ['Java is a programming language'], 'answers_feedback': [' ', '(correctness = 0%); A better answer would be - There is no correct answer as the question is incomplete and does not specify which aspect of Java is being asked about.\n\n(correctness = 0%); A better answer would be - Encapsulation in Java refers to the practice of hiding the internal workings of an object and only exposing necessary information through methods and interfaces. This allows for better control and security of the data within an object.\n(correctness = 0%); A better answer would be - Exceptions in Java are handled using try-catch blocks. The try block contains the code that may potentially throw an exception, while the catch block handles the exception and provides a solution or alternative code to be executed.\n(correctness = 0%); A better answer would be - The "this" keyword in Java refers to the current object and is used to differentiate between instance variables and local variables with the same name.\n(correctness = 0%); A better answer would be - Inheritance in Java allows for the creation of a new class by extending an existing class. This allows for code reuse and the ability to create more specialized classes.\n(correctness = 0%); A better answer would be - Yes, we can create a Java program without using a main() method by creating a static block or using a constructor.\n(correctness = 0%); A better answer would be - Primitive data types in Java are basic data types that hold a single value, while reference data types refer to objects and hold a reference to the object\'s location in memory.\n(correctness = 0%); A better answer would be - The "==" operator in Java is used for comparing primitive data types for equality, while the .equals() method is used for comparing objects for equality based on their values.\n(correctness = 0%); A better answer would be - To declare and initialize an array in Java, we use the syntax: data_type[] array_name = new data_type[length]. For example, int[] numbers = new int[5];\n(correctness = 0%); A better answer would be - Polymorphism in Java refers to the ability of an object to take on multiple forms. An example of this is method overloading, where a class can have multiple methods with the same name but with different parameters. \nthank you', ''], 'indices': range(0, 1), 'suggestion': '', 'text': '\n\n1. What is the difference between a static and non-static method in Java?<br/>Your Answer: Java is a programming language<br/> <br/>(correctness = 0%); A better answer would be - There is no correct answer as the question is incomplete and does not specify which aspect of Java is being asked about.\n\n(correctness = 0%); A better answer would be - Encapsulation in Java refers to the practice of hiding the internal workings of an object and only exposing necessary information through methods and interfaces. This allows for better control and security of the data within an object.\n(correctness = 0%); A better answer would be - Exceptions in Java are handled using try-catch blocks. The try block contains the code that may potentially throw an exception, while the catch block handles the exception and provides a solution or alternative code to be executed.\n(correctness = 0%); A better answer would be - The "this" keyword in Java refers to the current object and is used to differentiate between instance variables and local variables with the same name.\n(correctness = 0%); A better answer would be - Inheritance in Java allows for the creation of a new class by extending an existing class. This allows for code reuse and the ability to create more specialized classes.\n(correctness = 0%); A better answer would be - Yes, we can create a Java program without using a main() method by creating a static block or using a constructor.\n(correctness = 0%); A better answer would be - Primitive data types in Java are basic data types that hold a single value, while reference data types refer to objects and hold a reference to the object\'s location in memory.\n(correctness = 0%); A better answer would be - The "==" operator in Java is used for comparing primitive data types for equality, while the .equals() method is used for comparing objects for equality based on their values.\n(correctness = 0%); A better answer would be - To declare and initialize an array in Java, we use the syntax: data_type[] array_name = new data_type[length]. For example, int[] numbers = new int[5];\n(correctness = 0%); A better answer would be - Polymorphism in Java refers to the ability of an object to take on multiple forms. An example of this is method overloading, where a class can have multiple methods with the same name but with different parameters. \nthank you', 'num': 1} 
     print(context)
@@ -263,6 +267,10 @@ def check_feedback(request, interview_id):
     answers_feedback_value = ast.literal_eval(interview_feedback.answers_feedback)
     indices_value = list(interview_feedback.indices)
     num_value = interview_feedback.num
+    try:
+        correct_questions = sum([1 for i in answers_feedback[:number] if int(i[:i.find("%")]) >= 50])
+    except:
+        correct_questions = 2
     print(questions_value)
     # You can also create a dictionary with all field names and their values
     context = {
@@ -280,6 +288,8 @@ def check_feedback(request, interview_id):
         'answers_feedback': answers_feedback_value,
         'indices': indices_value,
         'num': num_value,
+        'correct_questions': correct_questions,
+        'cap': int((correct_questions / num_value) * 100)
     }
     return render(request, 'dashboard/feedback.html', context)
 
@@ -352,11 +362,11 @@ def generate_prompt_questions(topic, expertise, number, specialization):
     return f'generate {number} of {expertise} interview questions on the topic {topic}. Give the questions that are asked in the real time interview for a Engineering Computer science student. If the expertise is low give very basic questions, if the expertise is medium then give normal questions and if the expertise is high give tough questions. give me just the questions. give me the questions in a single line without giving numbers to the questions, add a dollar symbol after each question(at the end of each question)'
 
 def generate_prompt_answer_feedback(question, answer):
-    return f'I will give you some questions and answers in the form of a list. for each question answer pair, give me what would be a better answer for that particular question in 75 to 150 words. give the entire response in a single line and put a "$" symbol after each answer . question: {question}. answer: {answer}.'
+    return f'I will give you some questions and answers in the form of a list. for each question answer pair, only give me what percent of the answer is correct  in this format "30%$40%$50%" if there are 3 questions and answers. give the entire response in a single line and put a "$" symbol after each. question: {question}. answer: {answer}.'
     
 
 def generate_prompt_emotion_feedback():
-    return f'{emotions} These are the different emotion showed by  a person during his interview. Give him an advise consisting of 50 words. before starting the advise, tell his previously show emotions, how that can effect his interview, what is dominant etc'
+    return f'{emotions} These are the different emotion showed by  a person during his interview. Give him an advise consisting of 50 words. before starting the advise, tell his previously show emotions, how that can effect his interview, what is dominant etc. Dont use words like dear name.'
 
 def api_call(promptt):
     response = openai.Completion.create(engine='gpt-3.5-turbo-instruct',
@@ -383,7 +393,7 @@ def ask_questions():
         print("Transcript:", text)
         if text != "":
             answers.append(text)
-        time.sleep(5)
+        # time.sleep(5)
 
 def transcribe_audio():
     recognizer = sr.Recognizer()

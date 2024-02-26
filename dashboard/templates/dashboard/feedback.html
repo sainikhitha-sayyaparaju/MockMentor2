@@ -146,7 +146,34 @@
 
     <div id="analytics" class="tab-pane fade show active">
       <ul class="list-group">
-        
+        <li class="list-group-item {% if 'coaching' == tab %}visible{% else %}invisible{% endif %}">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <i class="fa fa-check-circle text-success"></i> Performsnce: {{cap}}%
+            </div>
+            <a href="#" class="toggle-info" data-bs-toggle="collapse" data-bs-target="#correctAnswers">
+              <i class="fa fa-caret-down"></i>
+            </a>
+          </div>
+          <div id="correctAnswers" class="collapse mt-2">
+            <div class="w3-container">
+              <br/>
+              <div class="w3-light-grey">
+                <div class="w3-container w3-blue" style="width:{{cap}}%">{{cap}}%</div>
+                <h5><b>{{correct_questions}} out of {{num}} are correct</b></h5>
+              </div><br>
+              </div>
+              {% if cap < 25 %}
+              <h6>Struggled to articulate clear responses and lacked depth in their answers. There was a noticeable lack of preparation for the interview, with limited understanding of the company and role. Communication skills need improvement, and a more thorough understanding of the required skills is recommended for future interviews.</h6>
+              {% elif cap < 50 %}
+              <h6>Demonstrated a basic understanding of the role and provided some relevant responses. However, there were significant gaps in their knowledge and ability to address certain questions. Communication skills were somewhat effective but could benefit from more clarity. Additional preparation and a deeper understanding of the industry and role are recommended for improvement.</h6>
+              {% elif cap < 75 %}
+              <h6>Performed well during the interview, showcasing a solid understanding of the role and industry. Responses were generally strong, and the interviewee effectively communicated their experiences and skills. Some areas could be refined for more precision, and a bit more depth in certain responses would enhance overall performance.</h6>
+              {% elif cap <= 100%}
+              <h6>Exceptional performance throughout the interview. The candidate demonstrated a comprehensive understanding of the role, industry, and company. Responses were articulate, thoughtful, and showcased a high level of expertise. Communication skills were excellent, and the candidate effectively conveyed their qualifications and suitability for the position. Overall, an outstanding interview performance.</h6>
+              {% endif %}
+          </div>
+        </li>
         <li class="list-group-item {% if 'coaching' == tab %}visible{% else %}invisible{% endif %}">
           <div class="d-flex justify-content-between align-items-center">
             <div>

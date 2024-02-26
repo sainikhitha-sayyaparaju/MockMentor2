@@ -20,21 +20,26 @@
   </button>
     </div>
     {% endfor %}
+    <br>
 
-    <h3>Log In to your account!</h3>
-    <form method="post" action="/signin" class="mb-2">
+<div class="jumbotron jumbotron-fluid  text-center">
+    <h1 class="display-4">Log In to Your Account</h1>
+    <p class="lead text-muted">Welcome back!</p>
+
+    <form method="post" action="/signin" class="mx-auto" style="max-width: 300px;">
         {% csrf_token %}
         <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Enter Your Username" Required>
+            <label for="username" class="sr-only">Username</label>
+            <input type="text" class="form-control form-control-lg rounded-pill" id="username" name="username" placeholder="Username" Required>
         </div>
         <div class="form-group">
-            <label for="pass1">Password</label>
-            <input type="password" class="form-control" id="pass1" name="pass1" placeholder="Enter Your Password" Required>
+            <label for="pass1" class="sr-only">Password</label>
+            <input type="password" class="form-control form-control-lg rounded-pill" id="pass1" name="pass1" placeholder="Password" Required>
         </div>
-
-        <button type="submit" class="btn btn-primary">Log In</button>
+        <button type="submit" class="btn btn-primary btn-lg rounded-pill">Log In</button>
     </form>
+</div>
+
 </body>
 </html>
 

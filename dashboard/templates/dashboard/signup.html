@@ -19,8 +19,8 @@
   </button>
     </div>
     {% endfor %}
-
-    <h3>Create your account!</h3>
+<br>
+    {% comment %} <h3>Create your account!</h3>
     <form method="post" action="/signup">
         {% csrf_token %}
         <div class="form-group">
@@ -48,7 +48,41 @@
             <input type="password" class="form-control" id="pass2" name="pass2" placeholder="Confirm Your Password" Required>
         </div>
         <button type="submit" class="btn btn-primary">Sign Up</button>
-    </form>
+    </form> {% endcomment %}
+    <div class="jumbotron jumbotron-fluid bg-light text-center">
+        <h1 class="display-4">Create Your Account</h1>
+        <p class="lead text-muted">Join the fun!</p>
+    
+        <form method="post" action="/signup" class="mx-auto" style="max-width: 300px;">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username" class="sr-only">Username</label>
+                <input type="text" class="form-control form-control-lg rounded-pill" id="username" name="username" placeholder="Username" Required>
+            </div>
+            <div class="form-group">
+                <label for="fname" class="sr-only">First Name</label>
+                <input type="text" class="form-control form-control-lg rounded-pill" id="fname" name="fname" placeholder="First Name" Required>
+            </div>
+            <div class="form-group">
+                <label for="lname" class="sr-only">Last Name</label>
+                <input type="text" class="form-control form-control-lg rounded-pill" id="lname" name="lname" placeholder="Last Name" Required>
+            </div>
+            <div class="form-group">
+                <label for="email" class="sr-only">Email</label>
+                <input type="email" class="form-control form-control-lg rounded-pill" id="email" name="email" placeholder="Email" Required>
+            </div>
+            <div class="form-group">
+                <label for="pass1" class="sr-only">Password</label>
+                <input type="password" class="form-control form-control-lg rounded-pill" id="pass1" name="pass1" placeholder="Password" Required>
+            </div>
+            <div class="form-group">
+                <label for="pass2" class="sr-only">Confirm Password</label>
+                <input type="password" class="form-control form-control-lg rounded-pill" id="pass2" name="pass2" placeholder="Confirm Password" Required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg rounded-pill">Sign Up</button>
+        </form>
+    </div>
+    
 </body>
 </html>
 
